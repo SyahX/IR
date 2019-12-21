@@ -28,7 +28,8 @@ for file in files:
         idx += 1
         sentences.append(words)
         if idx % BLOCK == 0:
-            print ("")
+            print ("load %d" % idx)
+            break
 print ("total data: %d, %d" % (idx, idx // BLOCK))
 
 print ("--- build model ---")
