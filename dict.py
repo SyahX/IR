@@ -29,7 +29,7 @@ for file in files:
         idx += 1
         for i, word in enumerate(words):
             if word not in word2tag:
-                word2tag[word] = tags[idx]
+                word2tag[word] = tags[i]
         if idx % BLOCK == 0:
             print ("load %d" % idx)
             break
