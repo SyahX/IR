@@ -39,7 +39,7 @@ with open("./word2tag.txt", "w") as f:
     json.dump(word2tag, f)
 
 with open("./word2tag.txt", "r") as f:
-    word2tag = json.load(word2tag)
+    word2tag = json.load(f)
 print (word2tag)
 
 print ("total data: %d, %d" % (idx, len(word2tag)))
