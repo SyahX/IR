@@ -4,7 +4,7 @@ import gensim
 import time
 
 data_path = "../data"
-BLOCK = 10000
+BLOCK = 1000000
 files = os.listdir(data_path)
 sentences = []
 idx = 0
@@ -29,12 +29,11 @@ for file in files:
         sentences.append(words)
         if idx % BLOCK == 0:
             print ("load %d" % idx)
-            break
 print ("total data: %d, %d" % (idx, idx // BLOCK))
 
 print ("--- build model ---")
 ptr_time = time.time()
-model = gensim.models.Word2Vec(sentences, size=128, window=5, min_count=5, workers=40, iter=40)
+model = gensim.models.Word2Vec(sentences, size=128, window=5, min_count=5, workers=40, iter=10)
 # model.build_vocab(sentences)
 total = time.time() - ptr_time
 print ("Total time: %.4f" % (total / 60.0))
