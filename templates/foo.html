@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Information Retrieval</title>
+</head>
+
+<body style="text-align:center">
+<h1>Information Retrieval</h1>
+<div id="Layer1" class="wrapper">
+    {% if message %} {{message}} {% endif %}
+    <form method="POST">
+        <label>
+            {% if keywords %}
+            <input name="keyword"
+                type="text"
+                class="speech-input"
+                autocomplete="off"
+                placeholder="请输入要查询的关键字"
+                value="{{ keywords }}">
+            </input>
+            {% else %}
+            <input name="keyword"
+                type="text"
+                class="speech-input"
+                autocomplete="off"
+                placeholder="请输入要查询的关键字">
+            </input>
+            {% endif %}
+        </label>
+        <br/>
+        <br/>
+        <label>
+            {% if window %}
+            <input name="window" type="text" class="speech-input" autocomplete="off" placeholder="请输入窗口大小" value="{{ window }}"/>
+            {% else %}
+            <input name="window" type="text" class="speech-input" autocomplete="off" placeholder="请输入窗口大小（默认大小为5）"/>
+            {% endif %}
+        </label>
+        <br/>
+        <br/>
+        <div>
+        <table style="margin:auto">
+            {% for i in range(4) %}
+            <tr>
+                {% for j in range(7) %}
+                {% set idx = i * 7 + j %}
+                    {% if tags2show.flag[idx] %}
+                    <td><input name="tags" type='checkbox'
+                        value={{idx}} checked>
+                        {{tags2show.tags2name[tags2show.idx2tags[idx]]}}</input></td>
+                    {% else %}
+                    <td><input name="tags" type='checkbox'
+                        value={{idx}}>
+                        {{tags2show.tags2name[tags2show.idx2tags[idx]]}}</input></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+        <br/>
+        <div>
+            <label>
+                <input type="submit" name="Submit" class="searchbutton" value="搜索" />
+            </label>
+        </div>
+    </form>
+</div>
+    {% if results %}
+    <table style="margin:auto">
+        <tr>
+            <th>Rank</th>
+            <th>Word</th>
+            <th>Score</th>
+            <th>Tag</th>
+        </tr>
+        {% for i in range(results|length) %}
+        {% set result = results[i] %}
+        <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ result.word }}</td>
+            <td>{{ result.score }}</td>
+            <td>{{ result.tag }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+</body>
+</html>
