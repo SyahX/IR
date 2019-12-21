@@ -1,6 +1,7 @@
 import gc
 import os
 import gensim
+import time
 
 data_path = "../data"
 
@@ -31,7 +32,16 @@ for file in files:
 print ("total data: %d" % idx)
 
 print ("--- train model ---")
-model = gensim.models.Word2Vec(sentences, size=128, window=3, min_count=5, workers=40, iter=40)
+ptr_time = time.time()
+model = gensim.models.Word2Vec(sentences, size=128, window=5, min_count=5, workers=40, iter=40)
+total = time.time() - ptr_time
+print ("Total time: %.4f" % (total / 60.0))
+
+print ("--- save model ---")
+ptr_time = time.time()
 model.wv.save_word2vec_format("got_word2vec.txt", binary=False)
+total = time.time() - ptr_time
+print ("Total time: %.4f" % (total / 60.0))
+
 
 
