@@ -43,7 +43,7 @@ print ("--- train model ---")
 ptr_time = time.time()
 length = len(sentences)
 for i in range(length // BLOCK):
-    model.train(sentences[i * BLOCK, (i + 1) * BLOCK])
+    model.train(sentences[i * BLOCK: (i + 1) * BLOCK])
     total = time.time() - ptr_time
     print ("Total time[%d]: %.4f" % ((i + 1) * BLOCK, total / 60.0))
 
