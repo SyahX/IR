@@ -4,6 +4,7 @@ import json
 import sys
 from copy import copy
 import numpy as np
+from gensim.models import KeyedVectors
 
 from flask import Flask
 from flask import render_template
@@ -33,6 +34,12 @@ def NewScore(score, i, j):
         return score
     else:
         return score # / abs(i - j)
+
+def sim(keyword):
+    with open("./word2tag.txt", "r") as f:
+        word2tag = json.load(f)
+    wv = KeyedVectors.load_word2vec_format('got_word2vec.txt', binary=False)
+    print (wv.most_similar(['man']))
 
 def search(keywords, size=5, tag=None):
     query = {
@@ -94,4 +101,5 @@ def foo():
     return render_template('foo.html', tags2show=tags2show)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='6006', debug=True)
+    # app.run(host='0.0.0.0', port='6006', debug=True)
+    sim("Y")
