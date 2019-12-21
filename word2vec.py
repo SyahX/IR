@@ -34,11 +34,11 @@ print ("total data: %d, %d" % (idx, idx // BLOCK))
 
 print ("--- build model ---")
 ptr_time = time.time()
-model = gensim.models.Word2Vec(size=128, window=5, min_count=5, workers=40, iter=40)
-model.build_vocab(sentences)
+model = gensim.models.Word2Vec(sentences, size=128, window=5, min_count=5, workers=40, iter=40)
+# model.build_vocab(sentences)
 total = time.time() - ptr_time
 print ("Total time: %.4f" % (total / 60.0))
-
+"""
 print ("--- train model ---")
 ptr_time = time.time()
 length = len(sentences)
@@ -46,7 +46,7 @@ for i in range(length // BLOCK):
     model.train(sentences)
     total = time.time() - ptr_time
     print ("Total time[%d]: %.4f" % ((i + 1) * BLOCK, total / 60.0))
-
+"""
 print ("--- save model ---")
 ptr_time = time.time()
 model.wv.save_word2vec_format("got_word2vec.txt", binary=False)
