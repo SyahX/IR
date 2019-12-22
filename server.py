@@ -29,6 +29,10 @@ tags2show = {
     "flag": [True for i in range(28)]
 }
 
+with open("./word2tag.txt", "r") as f:
+    word2tag = json.load(f)
+wv = KeyedVectors.load_word2vec_format('got_word2vec.txt', binary=False)
+
 def NewScore(score, i, j):
     if j < i:
         return score
@@ -36,9 +40,6 @@ def NewScore(score, i, j):
         return score # / abs(i - j)
 
 def sim(keyword):
-    with open("./word2tag.txt", "r") as f:
-        word2tag = json.load(f)
-    wv = KeyedVectors.load_word2vec_format('got_word2vec.txt', binary=False)
     print (wv.most_similar(['man']))
 
 def search(keywords, size=5, tag=None):
@@ -61,6 +62,15 @@ def search(keywords, size=5, tag=None):
         words = hit["_source"]["words"]
         tags = hit["_source"]["tags"]
         lens = len(words)
+
+        sim = []
+        for word in words:
+            cnt = 0
+            for keyword in keywords:
+                cnt += wv.similarity()
+            sim.append(cnt)
+        total_sim = np.sum(sim) + 1e-8
+
         for i, word in enumerate(words):
             if word in keywords:
                 for j in range(max(i - size, 0),
@@ -70,9 +80,9 @@ def search(keywords, size=5, tag=None):
                     elif tag != None and tags[j] not in tag:
                         continue
                     elif words[j] in word_results:
-                        word_results[words[j]].append(NewScore(score, i, j))
+                        word_results[words[j]].append(score * sim[j] / total_sim)
                     else:
-                        word_results[words[j]] = [NewScore(score, i, j)]
+                        word_results[words[j]] = [score * sim[j] / total_sim]
                         pos_table[words[j]] = tags[j]
     for key in word_results:
         word_results[key] = np.mean(word_results[key])
@@ -101,5 +111,5 @@ def foo():
     return render_template('foo.html', tags2show=tags2show)
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port='6006', debug=True)
-    sim("Y")
+    app.run(host='0.0.0.0', port='6006', debug=True)
+    # sim("Y")
