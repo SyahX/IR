@@ -67,7 +67,7 @@ def search(keywords, size=5, tag=None):
         for word in words:
             cnt = 0
             for keyword in keywords:
-                cnt += wv.similarity()
+                cnt += wv.similarity(word, keyword)
             sim.append(cnt)
         total_sim = np.sum(sim) + 1e-8
 
